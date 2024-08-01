@@ -3,8 +3,11 @@ package main
 import "fmt"
 
 func callbackHelp() {
+	commands := getCommands()
+
 	fmt.Println("Available commands:")
-	fmt.Println(" - help: This list")
-	fmt.Println(" - exit: Exit REPL")
+	for _, cmd := range commands {
+		fmt.Printf(" - %s: %s\n", cmd.name, cmd.description)
+	}
 	fmt.Println("")
 }
