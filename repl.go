@@ -7,11 +7,10 @@ import (
 	"strings"
 )
 
-func startRepl() {
-	config := config{"https://pokeapi.co/api/v2/location-area/", "https://pokeapi.co/api/v2/location-area/"}
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print(" >")
+		fmt.Print("> ")
 		scanner.Scan()
 		text := scanner.Text()
 
@@ -24,16 +23,14 @@ func startRepl() {
 		availableCommands := getCommands()
 		command, ok := availableCommands[commandName]
 		if !ok {
-			fmt.Println("Invalid command!")
+			fmt.Println("Invalid command! (Try 'help')")
 			continue
 		}
-		command.callback(&config)
+		err := command.callback(cfg)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
-}
-
-type config struct {
-	Next     string
-	Previous string
 }
 
 type cliCommand struct {
@@ -44,6 +41,16 @@ type cliCommand struct {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"map": {
+			name:        "map",
+			description: "Gets the next 20 locations",
+			callback:    callbackMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Gets the previous 20 locations",
+			callback:    callbackMapB,
+		},
 		"help": {
 			name:        "help",
 			description: "Prints help menu",
@@ -53,11 +60,6 @@ func getCommands() map[string]cliCommand {
 			name:        "exit",
 			description: "Exits Pokedex",
 			callback:    callbackExit,
-		},
-		"map": {
-			name:        "map",
-			description: "Gives 20 locations",
-			callback:    callbackMap,
 		},
 	}
 }

@@ -8,10 +8,12 @@ import (
 	// "github.com/mpja69/pokedexcli/internal/pokeapi"
 )
 
-func (c *Client) ListLocationAreas() (LocationAreaResponse, error) {
+func (c *Client) ListLocationAreas(nextURL *string) (LocationAreaResponse, error) {
 	endpoint := "/location-area"
 	fullURL := baseURL + endpoint
-
+	if nextURL != nil {
+		fullURL = *nextURL
+	}
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
 		return LocationAreaResponse{}, err
