@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./internal/pokeapi"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -33,14 +34,4 @@ func callbackMap(c *config) error {
 	}
 	c.Next = pokeMap.Next
 	return nil
-}
-
-type PokeMap struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous any    `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
 }
