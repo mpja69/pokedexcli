@@ -14,6 +14,17 @@ func (c *Client) ListLocationAreas(nextURL *string) (LocationAreaResponse, error
 	if nextURL != nil {
 		fullURL = *nextURL
 	}
+	data, ok := c.cache.Get(fullURL)
+	if ok {
+		pokeMap := LocationAreaResponse{}
+		err := json.Unmarshal(data, &pokeMap)
+		if err != nil {
+			return LocationAreaResponse{}, err
+		}
+
+		return pokeMap, nil
+	}
+
 	req, err := http.NewRequest("GET", fullURL, nil)
 	if err != nil {
 		return LocationAreaResponse{}, err
@@ -28,7 +39,7 @@ func (c *Client) ListLocationAreas(nextURL *string) (LocationAreaResponse, error
 		return LocationAreaResponse{}, fmt.Errorf("bad status code: %v", res.StatusCode)
 	}
 
-	data, err := io.ReadAll(res.Body)
+	data, err = io.ReadAll(res.Body)
 	if err != nil {
 		return LocationAreaResponse{}, err
 	}
@@ -38,6 +49,7 @@ func (c *Client) ListLocationAreas(nextURL *string) (LocationAreaResponse, error
 	if err != nil {
 		return LocationAreaResponse{}, err
 	}
+	c.cache.Add(fullURL, data)
 
 	return pokeMap, nil
 }

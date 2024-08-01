@@ -1,6 +1,10 @@
 package main
 
-import "github.com/mpja69/pokedexcli/internal/pokeapi"
+import (
+	"time"
+
+	"github.com/mpja69/pokedexcli/internal/pokeapi"
+)
 
 type config struct {
 	Client   pokeapi.Client
@@ -10,8 +14,7 @@ type config struct {
 
 func main() {
 	cfg := config{
-		Client: pokeapi.NewClient(),
+		Client: pokeapi.NewClient(time.Hour),
 	}
-	// config := config{"https://pokeapi.co/api/v2/location-area/", "https://pokeapi.co/api/v2/location-area/"}
 	startRepl(&cfg)
 }
