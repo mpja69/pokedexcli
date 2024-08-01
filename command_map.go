@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func callbackMap(cfg *config) error {
+func callbackMap(cfg *config, _ ...string) error {
 	res, err := cfg.Client.ListLocationAreas(cfg.Next)
 	if err != nil {
 		return err

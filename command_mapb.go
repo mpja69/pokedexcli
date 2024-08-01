@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func callbackMapB(cfg *config) error {
+func callbackMapB(cfg *config, _ ...string) error {
 	if cfg.Previous == nil {
 		return errors.New("Already on the first page!")
 	}
