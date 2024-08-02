@@ -11,15 +11,15 @@ func callbackCatch(cfg *config, args ...string) error {
 		return errors.New("Missing Pokemon name")
 	}
 	name := args[0]
-	res, err := cfg.Client.GetPokemon(name)
+	pokemon, err := cfg.Client.GetPokemon(name)
 	if err != nil {
 		return err
 	}
 	fmt.Printf("Cathing %s...", name)
-	xp := res.BaseExperience
+	xp := pokemon.BaseExperience
 	rnd := rand.Intn(400)
 	if rnd > xp {
-		cfg.Pokedex[name] = res
+		cfg.Pokedex[name] = pokemon
 		fmt.Println("Got'em!")
 	} else {
 		fmt.Println("Missed!")
