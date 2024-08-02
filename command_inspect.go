@@ -11,9 +11,8 @@ func callbackInspect(cfg *config, args ...string) error {
 	}
 	name := args[0]
 	pokemon, ok := cfg.Pokedex[name]
-	// HACK: Ska detta vara eeror?!?!
 	if !ok {
-		return fmt.Errorf("You haven't cought %s", name)
+		return fmt.Errorf("You haven't cought %s yet.", name)
 	}
 	fmt.Printf("Name: %s\n", pokemon.Name)
 	fmt.Printf("Height: %d\n", pokemon.Height)
